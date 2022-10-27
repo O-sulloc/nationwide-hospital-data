@@ -1,5 +1,8 @@
 package com.example.practice.controller;
 
+import com.example.practice.domain.MemberDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -9,7 +12,7 @@ import java.util.Map;
 public class PostController {
 
     @RequestMapping(value = "/domain", method = RequestMethod.POST)
-    public String posetExample(){
+    public String postExample(){
         return "hello post api";
     }
 
@@ -22,5 +25,17 @@ public class PostController {
         });
 
         return  sb.toString();
+    }
+
+    @PostMapping("/member2")
+    public String postMember(@RequestBody MemberDTO memberDto){
+        return memberDto.toString();
+    }
+
+    @PostMapping("/member3")
+    public ResponseEntity<MemberDTO> putmember(@RequestBody MemberDTO memberDto) {
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body(memberDto);
     }
 }
