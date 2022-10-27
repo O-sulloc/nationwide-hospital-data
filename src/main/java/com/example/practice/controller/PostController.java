@@ -33,7 +33,7 @@ public class PostController {
     }
 
     @PostMapping("/member3")
-    public ResponseEntity<MemberDTO> putmember(@RequestBody MemberDTO memberDto) {
+    public ResponseEntity<MemberDTO> putMember(@RequestBody MemberDTO memberDto) {
         return ResponseEntity
                 .status(HttpStatus.ACCEPTED)
                 .body(memberDto);
