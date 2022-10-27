@@ -54,6 +54,9 @@ public class PracticeController {
 
     @GetMapping(value = "/request3")
     public String getRequestParam3(MemberDTO memberDTO) {
+        memberDTO.setName("jhjh");
+        memberDTO.setEmail("jh@jhjh");
+        memberDTO.setOrganization("lion");
         return memberDTO.toString();
     }
 }
