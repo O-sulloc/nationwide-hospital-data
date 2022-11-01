@@ -25,8 +25,9 @@ class HospitalParserTest {
     HospitalDAO hospitalDAO;
 
     @Test
-    void getCountTest(){
+    void deleteAndCount(){
         HospitalParser hp = new HospitalParser();
+        hospitalDAO.deleteAll();
         int result =hospitalDAO.getCount();
         System.out.println(result);
     }
