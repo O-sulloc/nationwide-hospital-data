@@ -25,6 +25,13 @@ class HospitalParserTest {
     HospitalDAO hospitalDAO;
 
     @Test
+    void getCountTest(){
+        HospitalParser hp = new HospitalParser();
+        int result =hospitalDAO.getCount();
+        System.out.println(result);
+    }
+
+    //@Test
     void add(){
         HospitalParser hp = new HospitalParser();
         Hospital hospital = hp.parse(line1);

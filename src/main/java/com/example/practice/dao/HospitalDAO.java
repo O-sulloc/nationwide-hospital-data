@@ -13,6 +13,11 @@ public class HospitalDAO {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public int getCount(){
+        String sql="select count(id) from nation_wide_hospital";
+        return this.jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
     public void add(Hospital hospital){
         String sql ="INSERT INTO `likelion-db`.`nation_wide_hospital` \n" +
                 "(`id`, `open_service_name`, `open_local_government_code`, `management_number`, `license_date`, " +
