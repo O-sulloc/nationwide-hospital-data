@@ -1,5 +1,6 @@
 package com.example.practice.parser;
 
+import com.example.practice.dao.HospitalDAO;
 import com.example.practice.domain.Hospital;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,17 @@ class HospitalParserTest {
     @Autowired
     ReadLineContext<Hospital> hospitalReadLineContext;
 
+    @Autowired
+    HospitalDAO hospitalDAO;
+
     @Test
+    void add(){
+        HospitalParser hp = new HospitalParser();
+        Hospital hospital = hp.parse(line1);
+        hospitalDAO.add(hospital);
+    }
+
+    //@Test
     @DisplayName("10만건 이상 파싱 되는지")
     void name() throws IOException {
         String fileName = "/Users/jeonghyeonkim/Downloads/fulldata_01_01_02_P_utf8.csv";
