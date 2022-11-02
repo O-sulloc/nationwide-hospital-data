@@ -36,7 +36,7 @@ class HospitalParserTest {
         System.out.println(result);
     }
 
-    @Test
+    //@Test
     void addAndGet(){
         HospitalParser hp = new HospitalParser();
 
@@ -58,7 +58,7 @@ class HospitalParserTest {
         assertEquals( selected.getTotalAreaSize(), hospital.getTotalAreaSize());
     }
 
-    @Test
+    //@Test
     @DisplayName("10만건 이상 파싱 되는지")
     void name() throws IOException {
         hospitalDAO.deleteAll();
