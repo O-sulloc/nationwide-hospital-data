@@ -24,7 +24,7 @@ class HospitalParserTest {
     @Autowired
     HospitalDAO hospitalDAO;
 
-    @Test
+    //@Test
     void deleteAndCount(){
         HospitalParser hp = new HospitalParser();
         hospitalDAO.deleteAll();
@@ -32,11 +32,26 @@ class HospitalParserTest {
         System.out.println(result);
     }
 
-    //@Test
-    void add(){
+    @Test
+    void addAndGet(){
         HospitalParser hp = new HospitalParser();
+
+        hospitalDAO.deleteAll();
+        int result =hospitalDAO.getCount();
+
         Hospital hospital = hp.parse(line1);
+
         hospitalDAO.add(hospital);
+
+        Hospital selected = hospitalDAO.findById(hospital.getId());
+        assertEquals( selected.getId(), hospital.getId());
+        assertEquals( selected.getOpenServiceName(), hospital.getOpenServiceName());
+        assertEquals( selected.getHospitalName(), hospital.getHospitalName());
+
+        //날짜 Float test
+        assertEquals( selected.getLicenseDate(), hospital.getLicenseDate());
+
+        assertEquals( selected.getTotalAreaSize(), hospital.getTotalAreaSize());
     }
 
     //@Test
