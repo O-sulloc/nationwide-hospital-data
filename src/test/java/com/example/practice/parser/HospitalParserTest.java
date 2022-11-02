@@ -2,6 +2,7 @@ package com.example.practice.parser;
 
 import com.example.practice.dao.HospitalDAO;
 import com.example.practice.domain.Hospital;
+import com.example.practice.service.HospitalService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ class HospitalParserTest {
 
     @Autowired
     HospitalDAO hospitalDAO;
+
+    @Autowired
+    HospitalService hospitalService;
 
     //@Test
     void deleteAndCount(){
@@ -54,19 +58,19 @@ class HospitalParserTest {
         assertEquals( selected.getTotalAreaSize(), hospital.getTotalAreaSize());
     }
 
-    //@Test
+    @Test
     @DisplayName("10만건 이상 파싱 되는지")
     void name() throws IOException {
+        hospitalDAO.deleteAll();
+
         String fileName = "/Users/jeonghyeonkim/Downloads/fulldata_01_01_02_P_utf8.csv";
+        int cnt = this.hospitalService.insertLargeVolumeHospitalData(fileName);
         List<Hospital> hospitalList = hospitalReadLineContext.readByLine(fileName);
 
         assertTrue(hospitalList.size() > 1000);
         assertTrue(hospitalList.size() > 10000);
 
-        for (int i = 0; i < 10; i++) {
-            System.out.println(hospitalList.get(i).getHospitalName());
-        }
-        System.out.printf("파싱된 데이터 개수: %d", hospitalList.size());
+        System.out.printf("파싱된 데이터 개수: %d", cnt);
     }
 
     //@Test
