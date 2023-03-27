@@ -29,60 +29,68 @@ class HospitalParserTest {
     HospitalService hospitalService;
 
     //@Test
-    void deleteAndCount(){
+    void deleteAndCount() {
         HospitalParser hp = new HospitalParser();
         hospitalDAO.deleteAll();
-        int result =hospitalDAO.getCount();
+        int result = hospitalDAO.getCount();
         System.out.println(result);
     }
 
     //@Test
-    void addAndGet(){
+    void addAndGet() {
         HospitalParser hp = new HospitalParser();
 
         hospitalDAO.deleteAll();
-        int result =hospitalDAO.getCount();
+        int result = hospitalDAO.getCount();
 
         Hospital hospital = hp.parse(line1);
 
         hospitalDAO.add(hospital);
 
         Hospital selected = hospitalDAO.findById(hospital.getId());
-        assertEquals( selected.getId(), hospital.getId());
-        assertEquals( selected.getOpenServiceName(), hospital.getOpenServiceName());
-        assertEquals( selected.getHospitalName(), hospital.getHospitalName());
+        assertEquals(selected.getId(), hospital.getId());
+        assertEquals(selected.getOpenServiceName(), hospital.getOpenServiceName());
+        assertEquals(selected.getHospitalName(), hospital.getHospitalName());
 
         //날짜 Float test
-        assertEquals( selected.getLicenseDate(), hospital.getLicenseDate());
+        assertEquals(selected.getLicenseDate(), hospital.getLicenseDate());
 
-        assertEquals( selected.getTotalAreaSize(), hospital.getTotalAreaSize());
+        assertEquals(selected.getTotalAreaSize(), hospital.getTotalAreaSize());
     }
 
-    //@Test
-    @DisplayName("10만건 이상 파싱 되는지")
-    void name() throws IOException {
+    @Test
+    @DisplayName("전국 병의원 데이터 DB 입력")
+    void addDB() throws IOException {
+
+        long startTime = System.currentTimeMillis();
+
         hospitalDAO.deleteAll();
 
         String fileName = "/Users/jeonghyeonkim/Downloads/fulldata_01_01_02_P_utf8.csv";
         int cnt = this.hospitalService.insertLargeVolumeHospitalData(fileName);
         List<Hospital> hospitalList = hospitalReadLineContext.readByLine(fileName);
 
+        long endTime = System.currentTimeMillis();
+
+        long time = (endTime - startTime) / 1000;
+        System.out.println("소요 시간: " + time);
+
         assertTrue(hospitalList.size() > 1000);
         assertTrue(hospitalList.size() > 10000);
 
-        System.out.printf("파싱된 데이터 개수: %d", cnt);
+        System.out.println("파싱된 데이터 개수: %d" + cnt);
     }
 
     //@Test
     @DisplayName("csv 1줄 hospital로 잘 만드는지 테스트")
-    void convertToHospital(){
+    void convertToHospital() {
         HospitalParser hp = new HospitalParser();
         Hospital hospital = hp.parse(line1);
 
         assertEquals(1, hospital.getId());
         assertEquals("의원", hospital.getOpenServiceName());
-        assertEquals(3620000,hospital.getOpenLocalGovernmentCode());
-        assertEquals("PHMA119993620020041100004",hospital.getManagementNumber());
+        assertEquals(3620000, hospital.getOpenLocalGovernmentCode());
+        assertEquals("PHMA119993620020041100004", hospital.getManagementNumber());
         assertEquals(LocalDateTime.of(1999, 6, 12, 0, 0, 0), hospital.getLicenseDate()); //19990612
         assertEquals(1, hospital.getBusinessStatus());
         assertEquals(13, hospital.getBusinessStatusCode());
