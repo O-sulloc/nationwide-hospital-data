@@ -1,9 +1,14 @@
 package com.example.practice.dao;
 
 import com.example.practice.domain.Hospital;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
 
 @Component
 public class HospitalDAO {
@@ -49,7 +54,7 @@ public class HospitalDAO {
         return this.jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    public void add(Hospital hospital){
+    public void add(List<Hospital> hospitalList){
         String sql ="INSERT INTO `hospital`.`nation_wide_hospital` \n" +
                 "(`id`, `open_service_name`, `open_local_government_code`, `management_number`, `license_date`, " +
                 "`business_status`, `business_status_code`, `phone`, `full_address`, `road_name_address`, `hospital_name`, " +
@@ -61,8 +66,35 @@ public class HospitalDAO {
                 "?,?,?," +
                 "?);";
 
-        this.jdbcTemplate.update(sql, hospital.getId(), hospital.getOpenServiceName(), hospital.getOpenLocalGovernmentCode(), hospital.getManagementNumber(), hospital.getLicenseDate(),
-                hospital.getBusinessStatus(), hospital.getBusinessStatusCode(), hospital.getPhone(), hospital.getFullAddress(), hospital.getRoadNameAddress(), hospital.getHospitalName(),
-                hospital.getBusinessTypeName(), hospital.getHealthcareProviderCount(), hospital.getPatientRoomCount(), hospital.getTotalNumberOfBeds(), hospital.getTotalAreaSize());
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                Hospital hospital = hospitalList.get(i);
+
+                int index = 1;
+                ps.setInt(index++, hospital.getId());
+                ps.setString(index++, hospital.getOpenServiceName());
+                ps.setInt(index++, hospital.getOpenLocalGovernmentCode());
+                ps.setString(index++, hospital.getManagementNumber());
+                ps.setString(index++, hospital.getLicenseDate().toString());
+                ps.setInt(index++, hospital.getBusinessStatus());
+                ps.setInt(index++, hospital.getBusinessStatusCode());
+                ps.setString(index++, hospital.getPhone());
+                ps.setString(index++, hospital.getFullAddress());
+                ps.setString(index++, hospital.getRoadNameAddress());
+                ps.setString(index++, hospital.getHospitalName());
+                ps.setString(index++, hospital.getBusinessTypeName());
+                ps.setInt(index++, hospital.getHealthcareProviderCount());
+                ps.setInt(index++, hospital.getPatientRoomCount());
+                ps.setInt(index++, hospital.getTotalNumberOfBeds());
+                ps.setFloat(index++, hospital.getTotalAreaSize());
+
+            }
+
+            @Override
+            public int getBatchSize() {
+                return hospitalList.size();
+            }
+        });
     }
 }

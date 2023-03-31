@@ -45,7 +45,7 @@ class HospitalParserTest {
 
         Hospital hospital = hp.parse(line1);
 
-        hospitalDAO.add(hospital);
+        //hospitalDAO.add(hospital);
 
         Hospital selected = hospitalDAO.findById(hospital.getId());
         assertEquals(selected.getId(), hospital.getId());
@@ -73,12 +73,11 @@ class HospitalParserTest {
         long endTime = System.currentTimeMillis();
 
         long time = (endTime - startTime) / 1000;
-        System.out.println("소요 시간: " + time);
+        System.out.println("소요 시간: " + time + "초");
 
         assertTrue(hospitalList.size() > 1000);
         assertTrue(hospitalList.size() > 10000);
-
-        System.out.println("파싱된 데이터 개수: %d" + cnt);
+        
     }
 
     //@Test

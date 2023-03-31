@@ -26,15 +26,14 @@ public class HospitalService {
         int cnt = 0;
         try {
             List<Hospital> hospitalList = readLineContext.readByLine(filename);
-            for (Hospital hospital : hospitalList) { // loop구간
-                try {
-                    this.hospitalDAO.add(hospital); // db에 insert하는 구간
-                    cnt++;
-                } catch (Exception e) {
-                    System.out.printf("id:%d 레코드에 문제가 있습니다.",hospital.getId());
-                    throw new RuntimeException(e);
-                }
+
+            try {
+                this.hospitalDAO.add(hospitalList);
+                cnt++;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
