@@ -54,7 +54,9 @@ BufferedReader로 읽어온 데이터 한 줄을 콤마 단위로 split 하여 �
 
 [JdbcTemplate 소스 코드](https://github.com/O-sulloc/nationwide-hospital-data/blob/master/src/main/java/com/example/practice/dao/HospitalDAO.java)
 
-Connection, Statement 객체의 생성/관리 작업을 개발자 대신 처리하여 코드 가독성과 효율성이 좋은 JDBC Template을 사용했다. JDBC Template의 update 메서드를 호출하여 DB에 병의원 정보를 입력했다.
+Connection, Statement 생성/관리 작업을 대신하는 JDBC Template을 사용하여 반복되는 코드를 줄이고 효율적으로 개발할 수 있었다. 
+초반에는 병의원 데이터를 MySql DB에 저장하기 위해 JDBC Template의 update를 사용하였으나, 성능 향상을 위해 batch update를 적용하였다. 그 결과 15분에 달하는 DB 저장 속도를 15초로 최적화할 수 있었다.
+
 
 ## 보완 사항
 ![스크린샷 2023-03-27 오전 11 01 41](https://user-images.githubusercontent.com/96342941/229012778-a80965a9-af7d-4040-8714-31a5ba276317.png)
